@@ -1,0 +1,26 @@
+name: Bug report
+description: Something is wrong, e.g. a false positive or a crash
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the command you ran and the output. For false positives, say which rule fired.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: A tiny libs.versions.toml plus the build script lines that use (or should use) the entry.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `catalog-lint --version`, plus your Python version and OS.
+    validations:
+      required: true

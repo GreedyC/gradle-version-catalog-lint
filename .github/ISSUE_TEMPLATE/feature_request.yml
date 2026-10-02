@@ -1,0 +1,16 @@
+name: Feature / rule request
+description: Suggest a new rule, output format or integration
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: What should the tool flag (or not flag)? Show catalog + build script snippets.
+      render: text

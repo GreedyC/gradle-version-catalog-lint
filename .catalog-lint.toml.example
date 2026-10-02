@@ -1,0 +1,5 @@
+# Copy to `.catalog-lint.toml` in your project root.
+disable = ["hardcoded-dependency"]       # rule ids to turn off
+ignore = ["library:kotlin-stdlib", "*-bom"]  # "alias" or "kind:alias" globs (kind: library|plugin|version|bundle)
+exclude = ["samples/*", "**/generated/*"]    # globs (relative to the scanned dir) to skip
+fail-on = "warning"                      # error | warning | info | never

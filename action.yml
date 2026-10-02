@@ -1,0 +1,47 @@
+name: Gradle Version Catalog Lint
+description: Find unused libraries, plugins and versions, dynamic/SNAPSHOT versions and hard-coded dependencies in Gradle version catalogs (libs.versions.toml).
+author: cosmichackerx
+branding:
+  icon: check-circle
+  color: green
+inputs:
+  path:
+    description: Project directory (or *.versions.toml file) to lint.
+    default: "."
+  fail-on:
+    description: Lowest severity that fails the step (error, warning, info, never).
+    default: warning
+  format:
+    description: Output format (text, json, github, sarif).
+    default: github
+  output-file:
+    description: Optional file to write the report to (useful with format=sarif).
+    default: ""
+  python-version:
+    description: Python version used to run the linter (3.11 or newer).
+    default: "3.12"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install catalog-lint
+      shell: bash
+      run: python -m pip install --disable-pip-version-check --quiet "${{ github.action_path }}"
+    - name: Run catalog-lint
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_OUTPUT_FILE: ${{ inputs.output-file }}
+      run: |
+        set +e
+        if [ -n "$INPUT_OUTPUT_FILE" ]; then
+          catalog-lint "$INPUT_PATH" --format "$INPUT_FORMAT" --fail-on "$INPUT_FAIL_ON" > "$INPUT_OUTPUT_FILE"
+        else
+          catalog-lint "$INPUT_PATH" --format "$INPUT_FORMAT" --fail-on "$INPUT_FAIL_ON"
+        fi
+        code=$?
+        exit $code

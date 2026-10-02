@@ -1,0 +1,8 @@
+- id: catalog-lint
+  name: Gradle version catalog lint
+  description: Lint Gradle version catalogs (libs.versions.toml) for unused and risky entries.
+  entry: catalog-lint
+  language: python
+  pass_filenames: false
+  files: '(\.versions\.toml|\.gradle(\.kts)?)$'
+  minimum_pre_commit_version: "3.0.0"
