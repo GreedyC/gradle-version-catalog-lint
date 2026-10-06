@@ -49,10 +49,10 @@ wrapper functions around catalog lookups can make live entries look unused.
 
 ```bash
 # recommended: isolated install straight from the tagged release
-pipx install git+https://github.com/cosmichackerx/gradle-version-catalog-lint@v0.1.1
+pipx install git+https://github.com/cosmichackerx/gradle-version-catalog-lint@v0.1.4
 
 # or with pip
-pip install git+https://github.com/cosmichackerx/gradle-version-catalog-lint@v0.1.1
+pip install git+https://github.com/cosmichackerx/gradle-version-catalog-lint@v0.1.4
 ```
 
 Requires Python 3.11 or newer. Installs two equivalent commands: `catalog-lint` and `gradle-catalog-lint`.
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: cosmichackerx/gradle-version-catalog-lint@v0.1.1
+      - uses: cosmichackerx/gradle-version-catalog-lint@v0.1.4
         with:
           fail-on: warning      # error | warning | info | never
 ```
@@ -133,7 +133,7 @@ jobs:
 Findings show up as inline annotations on the PR. For GitHub code scanning:
 
 ```yaml
-      - uses: cosmichackerx/gradle-version-catalog-lint@v0.1.1
+      - uses: cosmichackerx/gradle-version-catalog-lint@v0.1.4
         with:
           format: sarif
           output-file: catalog-lint.sarif
@@ -148,7 +148,7 @@ Findings show up as inline annotations on the PR. For GitHub code scanning:
 ```yaml
 repos:
   - repo: https://github.com/cosmichackerx/gradle-version-catalog-lint
-    rev: v0.1.1
+    rev: v0.1.4
     hooks:
       - id: catalog-lint
 ```
@@ -277,6 +277,28 @@ Ideas and rule requests are welcome as issues.
 [`gvc`](https://github.com/kingsword09/gvc) (catalog updates, Rust), [Inspecta](https://github.com/HossamSadekk/Inspecta)
 (Gradle plugin) and IntelliJ's *Unused version catalog entry* inspection overlap partly with this tool.
 `catalog-lint` aims to be the standalone, build-free, CI-first option with machine-readable output.
+
+## Related tools
+
+Small, independent tools by the same author, for build and CI hygiene and for migrations with a deadline. Each works on its own; none requires another.
+
+**Gradle and Android migrations**
+
+* [gradle10-ready](https://github.com/cosmichackerx/gradle10-ready): Static scan of Gradle build scripts for what Gradle 10 removes (space assignment, multi-string dependencies, Kotlin DSL delegates). `--fix`, PR mode.
+* [agp9-ready](https://github.com/cosmichackerx/agp9-ready): Static scan of Gradle files for what Android Gradle Plugin 9 and 10 break (built-in Kotlin, legacy variant API, opt-outs), including `buildSrc`. `--fix`, PR mode.
+* [kotlin24-ready](https://github.com/cosmichackerx/kotlin24-ready): Static scan of Gradle build scripts for what Kotlin 2.4 removes in the Kotlin Gradle plugin (language version 1.9, KMP `targetHierarchy`, Compose options, ABI validation). `--fix`, PR mode.
+* [android-target-ready](https://github.com/cosmichackerx/android-target-ready): Static scanner for the targetSdk 36 / 37 migration in app code and manifests (edge-to-edge, predictive back, large screens).
+* [android-target-lint](https://github.com/cosmichackerx/android-target-lint): The same targetSdk migration checks as real Android Lint rules (a lint jar with type resolution).
+
+**CI and repository hygiene**
+
+* [node24-ready](https://github.com/cosmichackerx/node24-ready): Finds GitHub Actions still on the removed Node 20 runtime, also inside composite actions and reusable workflows, and the smallest node24 upgrade.
+* [dependabot-gaps](https://github.com/cosmichackerx/dependabot-gaps): Finds manifests your `dependabot.yml` does not cover, and dead or overlapping entries.
+* [sha256-ready](https://github.com/cosmichackerx/sha256-ready): Finds code that assumes 40-character Git hashes before Git 3.0 makes SHA-256 repositories the default.
+* [helm4-ready](https://github.com/cosmichackerx/helm4-ready): Finds the Helm 3 CLI usage (removed and deprecated flags, executable post-renderers, `registry login` URLs, Helm 3 pins) that Helm 4 rejects in CI workflows, scripts and Makefiles, checked against real Helm 3.22.0 and 4.3.0.
+* [kafka4-ready](https://github.com/cosmichackerx/kafka4-ready): Finds Kafka 3 settings and CLI usage that Kafka 4 rejects or silently ignores (ZooKeeper-mode broker files, removed `zookeeper.*` and `log.message.format.version` settings, `--zookeeper` options, space-separated `--bootstrap-server`), checked against a real Kafka 4 broker and tools.
+* [pandas3-ready](https://github.com/cosmichackerx/pandas3-ready): Static scan of Python files and notebooks for code that breaks or changes meaning on pandas 3 (removed APIs and aliases, chained assignment, read-only arrays, string dtype), checked against pandas 2.3.3 and 3.0.x.
+* [agent-context-diff](https://github.com/cosmichackerx/agent-context-diff): Diffs `AGENTS.md`, `CLAUDE.md`, Cursor rules and MCP configs between git refs (new servers, widened permissions, hidden Unicode).
 
 ## License
 
